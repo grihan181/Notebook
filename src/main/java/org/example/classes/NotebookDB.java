@@ -16,30 +16,18 @@ public class NotebookDB {
 
         try {
             Statement stat = connection.createStatement();
-            ResultSet rs = stat.executeQuery("SELECT * FROM NOTEBOOKS WHERE USERS_ID = " + userID +";");
+            ResultSet rs = stat.executeQuery("SELECT * FROM NOTEBOOKS WHERE USERS_ID = " + userID +
+                    " ORDER BY IMPORTANT DESC, CREATED_WHEN DESC;");
 
             while (rs.next()) {
                 long id = rs.getLong("ID");
                 String name = rs.getString("NAME");
                 String notes = rs.getString("NOTES");
                 boolean important = rs.getBoolean("IMPORTANT");
-                String createdWhenBefoteSplit = rs.getString("CREATED_WHEN");
-                String[] createdWhenSplit = createdWhenBefoteSplit.split(":");
-                StringBuilder createdWhen = new StringBuilder();
-                int count = 0;
-                for(String s : createdWhenSplit) {
-                    if (count < 2) {
-                        createdWhen.append(s);
-                        if(count == 0) {
-                            createdWhen.append(":");
-                        }
-                        count++;
-                    }
-                }
-
+                String createdWhen = changeFormatCreatedWhen(rs.getString("CREATED_WHEN"));
                 String reminded = rs.getString("REMINDER");
                 Notebook notebook = new Notebook(id, name, notes,
-                        important, createdWhen.toString(), reminded, userID);
+                        important, createdWhen, reminded, userID);
                 notebooks.add(notebook);
 
             }
@@ -60,7 +48,7 @@ public class NotebookDB {
                 String name = rs.getString("NAME");
                 String notes = rs.getString("NOTES");
                 boolean important = rs.getBoolean("IMPORTANT");
-                String createdWhen = rs.getString("CREATED_WHEN");
+                String createdWhen = changeFormatCreatedWhen(rs.getString("CREATED_WHEN"));
                 String reminded = rs.getString("REMINDER");
                  notebook = new Notebook(id, name, notes,
                         important, createdWhen, reminded, userID);
@@ -130,14 +118,14 @@ public class NotebookDB {
 
                 ResultSet rs = stat.executeQuery("SELECT * FROM NOTEBOOKS WHERE " +
                         "(LOWER(" + row + ") LIKE LOWER('%" + current + "%'))" +
-                        " AND (USERS_ID = " + userID + ");");
+                        " AND (USERS_ID = " + userID + ") ORDER BY IMPORTANT DESC, CREATED_WHEN DESC;;");
 
                 while (rs.next()) {
                     long id = rs.getLong("ID");
                     String name = rs.getString("NAME");
                     String notes = rs.getString("NOTES");
                     boolean important = rs.getBoolean("IMPORTANT");
-                    String createdWhen = rs.getString("CREATED_WHEN");
+                    String createdWhen = changeFormatCreatedWhen(rs.getString("CREATED_WHEN"));
                     String reminded = rs.getString("REMINDER");
                     Notebook notebook = new Notebook(id, name, notes,
                             important, createdWhen, reminded, userID);
@@ -153,14 +141,14 @@ public class NotebookDB {
 
                 ResultSet rs = stat.executeQuery("SELECT * FROM NOTEBOOKS WHERE " +
                         "(" + row + " IS " + current + ")" +
-                        " AND (USERS_ID = " + userID + ");");
+                        " AND (USERS_ID = " + userID + ") ORDER BY IMPORTANT DESC, CREATED_WHEN DESC;");
 
                 while (rs.next()) {
                     long id = rs.getLong("ID");
                     String name = rs.getString("NAME");
                     String notes = rs.getString("NOTES");
                     boolean important = rs.getBoolean("IMPORTANT");
-                    String createdWhen = rs.getString("CREATED_WHEN");
+                    String createdWhen = changeFormatCreatedWhen(rs.getString("CREATED_WHEN"));
                     String reminded = rs.getString("REMINDER");
                     Notebook notebook = new Notebook(id, name, notes,
                             important, createdWhen, reminded, userID);
@@ -176,14 +164,14 @@ public class NotebookDB {
 
                 ResultSet rs = stat.executeQuery("SELECT * FROM NOTEBOOKS WHERE " +
                         "(" + row + " IS " + current + ")" +
-                        " AND (USERS_ID = " + userID + ");");
+                        " AND (USERS_ID = " + userID + ") ORDER BY CREATED_WHEN DESC;");
 
                 while (rs.next()) {
                     long id = rs.getLong("ID");
                     String name = rs.getString("NAME");
                     String notes = rs.getString("NOTES");
                     boolean important = rs.getBoolean("IMPORTANT");
-                    String createdWhen = rs.getString("CREATED_WHEN");
+                    String createdWhen = changeFormatCreatedWhen(rs.getString("CREATED_WHEN"));
                     String reminded = rs.getString("REMINDER");
                     Notebook notebook = new Notebook(id, name, notes,
                             important, createdWhen, reminded, userID);
@@ -195,5 +183,20 @@ public class NotebookDB {
             }
         }
         return notebooks;
+    }
+    private static String changeFormatCreatedWhen(String createdWhenBefoteSplit) {
+        String[] createdWhenSplit = createdWhenBefoteSplit.split(":");
+        StringBuilder createdWhen = new StringBuilder();
+        int count = 0;
+        for(String s : createdWhenSplit) {
+            if (count < 2) {
+                createdWhen.append(s);
+                if(count == 0) {
+                    createdWhen.append(":");
+                }
+                count++;
+            }
+        }
+        return createdWhen.toString();
     }
 }

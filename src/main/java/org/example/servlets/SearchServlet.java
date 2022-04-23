@@ -60,6 +60,11 @@ public class SearchServlet extends HttpServlet {
 
 
         ArrayList<Notebook> notebooks = NotebookDB.search(userId, req, row, current);
+        for(Notebook notebook : notebooks) {
+            if(notebook.getReminder() != null) {
+                notebook.setReminder(notebook.getReminder().replace('T', ' '));
+            }
+        }
         req.setAttribute("notebooks", notebooks);
         req.getRequestDispatcher("/notebook.jsp").forward(req, resp);
     }
