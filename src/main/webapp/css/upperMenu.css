@@ -1,0 +1,29 @@
+@import url(https://fonts.googleapis.com/css?family=Lora);
+body {
+margin:0;
+background: url(img/walls4.jpg);
+}
+
+.menu ul {
+  display: -webkit-flex;
+  display: flex;
+  background: rgba(243, 231, 207);
+  padding-left: 0;
+}
+.menu a {
+  padding: 1em;
+  display: block;
+  color: #9B4222;
+  border-right: 1px solid #FFAB51;
+  background: rgba(243, 231, 207);
+  position: absolute;
+  right: 0px;
+}
+.menu div {
+  padding: 1em;
+  display: block;
+  color: #9B4222;
+  border-right: 1px solid #FFAB51;
+  background: rgba(243, 231, 207);
+}
+.menu a:hover {background: #CD853F ;}

@@ -1,0 +1,78 @@
+#item{
+  list-style:none;
+  overflow:hidden;
+  padding:1%;
+  width: 100%;
+  text-decoration:none;
+  color:#000;
+  background:#ffc;
+  display:block;
+  min-height: 30%;
+  width: 30%;
+  padding: 1em;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  -moz-box-shadow:5px 5px 7px rgba(33,33,33,1);
+  -webkit-box-shadow: 5px 5px 7px rgba(33,33,33,.7);
+  box-shadow: 5px 5px 7px rgba(33,33,33,.7);
+ -moz-transition:-moz-transform .15s linear;
+ -o-transition:-o-transform .15s linear;
+ -webkit-transition:-webkit-transform .15s linear;
+}
+.input-form textarea {
+    padding: 10px;
+    width: 100%;
+    height: 150px;
+    font-size: 25px;
+    background: none;
+    outline: none;
+    border: 1px solid #fff;
+    box-sizing: border-box;
+}
+.input-form textarea[type = "text"]:focus, #name:focus{
+    border: 1px solid #0fc3f5;
+}
+#name {
+     padding: 10px;
+     width: 50%;
+     font-size: 25px;
+     background: none;
+     outline: none;
+     border: 1px solid #fff;
+     box-sizing: border-box;
+     text-align: center;
+}
+label {
+    font-size: 25;
+     cursor: pointer;
+}
+#buttons {
+    margin-top: 10%;
+}
+#checkbox {
+    height: 15px;
+    width: 10px;
+    transform : scale(2);
+    cursor: pointer;
+}
+#save {
+    height: 40px;
+    width: 100px;
+    float: right;
+    margin-right: 20px;
+    background: none;
+    border: 1px solid #0fc3f5;
+    cursor: pointer;
+}
+#save:hover {
+   background:  #0fc3f5;
+}
+#reminder {
+     margin-left: 16px;
+     display: inline-block;
+     vertical-align: baseline;
+}
