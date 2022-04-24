@@ -8,18 +8,20 @@
     text-align: center;
     align: center;
     border-radius: 50px;
+    display:none;
 }
 #selectSearch {
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    float: right;
+    left: 50%;
     width: 50%;
     height: 30px;
     background: #f3e7cf;
     text-align: center;
     align: center;
     border-radius: 50px;
-}
+ }
+
 
 .alert {
     width: 40%;
@@ -141,4 +143,19 @@ h2,p{
   top:-5px;
   background:#ccf;
 }
-
+#searchButton {
+    height: 40px;
+    width: 100px;
+    float: right;
+    margin-right: 20%;
+    background: #0fc3f5;
+    opacity: .5;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+}
+#searchButton:hover {
+   background:  #0fc3f5;
+   transform: scale(1.5);
+   border-radius: 50px;
+}

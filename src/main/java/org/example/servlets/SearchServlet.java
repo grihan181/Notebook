@@ -22,44 +22,48 @@ public class SearchServlet extends HttpServlet {
         long userId = Long.parseLong((req.getSession().getAttribute("userId")).toString());
         String row = "";
         String current = "";
+        ArrayList<Notebook> notebooks;
+
         switch (req.getParameter("selectSearch")) {
             case "searchName"  ->  {
                 row = "NAME";
                 current = req.getParameter("searchText");
             }
-            case "searchImportant" -> {
-                row = "IMPORTANT";
-                if(req.getParameter("searchText").equals("Важно")) {
-                    current = "true";
-                } else if(req.getParameter("searchText").equals("Не важно")) {
-                    current = "false";
-                } else {
-                    req.setAttribute("textError", "Такого варианта нет(");
-                }
-            }
             case "searchNotes" -> {
                 row = "NOTES";
                 current = req.getParameter("searchText");
-            }
-            case "searchReminder" -> {
-                row = "REMINDER";
-                if(req.getParameter("searchText").equals("Напомнить")) {
-                    current = "NOT NULL";
-                } else if(req.getParameter("searchText").equals("Не напоминать")) {
-                    current = "NULL";
-                } else {
-                    req.setAttribute("textError", "Такого варианта нет(");
-                }
             }
             case "searchData" -> {
                 row = "CREATED_WHEN";
                 current = req.getParameter("searchText");
             }
+            case "Важно" -> {
+                row = "IMPORTANT";
+                current = "true";
+            }
+            case "Не важно" -> {
+                row = "IMPORTANT";
+                current = "false";
+            }
+            case "Напомнить" -> {
+                row = "REMINDER";
+                current = "NOT NULL";
+            }
+            case "Не напоминать" -> {
+                row = "REMINDER";
+                current = "NULL";
+            }
+            case "all" -> {
+                notebooks = NotebookDB.select(userId, req);
+                req.setAttribute("notebooks", notebooks);
+                req.getRequestDispatcher("/notebook.jsp").forward(req, resp);
+                return;
+            }
         }
 
 
 
-        ArrayList<Notebook> notebooks = NotebookDB.search(userId, req, row, current);
+        notebooks = NotebookDB.search(userId, req, row, current);
         for(Notebook notebook : notebooks) {
             if(notebook.getReminder() != null) {
                 notebook.setReminder(notebook.getReminder().replace('T', ' '));

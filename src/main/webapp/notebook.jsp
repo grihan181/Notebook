@@ -18,21 +18,35 @@
                 <form action = '<c:url value = "/search" />'  style = "display:inline;">
                    <div class = "error-text" style = "padding: 8px 0; border-radius: 5px;  color: #fa0505; text-align: center;">
                         ${textError}
+                         <input id = "searchButton" type="submit" value="Найти" />
                    </div>
-                   <select name="selectSearch" id = "selectSearch">
-                      <option selected value="searchName">По названию</option>
-                      <option value="searchImportant">Статусу важное(Важно/Не важно)</option>
+
+                   <select onchange="val()" name="selectSearch" id = "selectSearch">
+                      <option value="">Выберете что хотите найти</option>
+                      <option value="all">Все элементы</option>
+                      <option value="searchName">По названию</option>
                       <option value="searchNotes">Поиск по содержимому</option>
-                      <option value="searchReminder">Напомнить(Напомнить/Не напоминать)</option>
                       <option value="searchData">По дате и времени записи
-                      Пример(YYYY-MM-DD HH:MM::SS)</option>
-                    </select>
+                        Пример(YYYY-MM-DD HH:MM::SS)</option>
+
+                        <optgroup label="Поиск по важности">
+                              <option value="Важно">Важно</option>
+                              <option value="Не важно">Не важно</option>
+
+                        <optgroup label="Поиск по напоминанию">
+                             <option value="Напомнить">Напомнить</option>
+                             <option value="Не напоминать">Не напоминать</option>
+                      </select>
+
+                    <br>
                     <br>
                      <nav>
                         <input name = "searchText" id = "searchText" type = "search" placeholder = "Искать запись здесь...(запрос Like)">
                      <nav>
+
                </form>
             </div>
+
             <br>
             <c:forEach var = "textAlert" items = "${textAlerts}">
                 <div class="alert">
@@ -51,6 +65,15 @@
                     setTimeout(function(){ div.style.display = "none"; }, 600);
                 }
             }
+
+         function val() {
+             d = document.getElementById("selectSearch").value;
+                if(d == "searchName"|| d == "searchNotes"|| d == "searchData"){
+                      document.getElementById("searchText").style.display = 'block';
+                 } else {
+                    document.getElementById("searchText").setAttribute("style","display:none;");
+                 }
+         }
             </script>
 
              <p id="makeText"><center><a href ='<c:url value = "/create" />' type = "submit"

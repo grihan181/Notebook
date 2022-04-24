@@ -4,6 +4,6 @@
         <title>Page not found</title>
     </head>
     <body>
-    <h2>P   age not found</h2>
+    <h2>Page not found</h2>
     </body>
 </html>
