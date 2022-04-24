@@ -1,22 +1,14 @@
-
-
 package org.example.listener;
-
-import org.example.connection.DataBaseConnectionManager;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextEvent;
 import javax.sql.DataSource;
-import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
 
 
 @WebListener

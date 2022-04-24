@@ -12,7 +12,7 @@
         <div class = "form">
             <form  action="signup" method = "post" autocomplete="on">
                 <h1>Регистрация</h1>
-                <div class = "error-text">Введенные пароли не совпадают</div>
+                <div class = "error-text" style = "padding: 8px 0; border-radius: 5px; color: #fa0505; text-align: center;"> ${textError}</div>
 
                 <div class = "input-form">
                     <input name="usernamesignup" required="required" type="text" placeholder="Введите ваш логин" />

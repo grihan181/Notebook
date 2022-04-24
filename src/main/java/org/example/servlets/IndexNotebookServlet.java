@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -33,10 +33,17 @@ public class IndexNotebookServlet extends HttpServlet {
 
         Connection connection = (Connection)req.getServletContext().getAttribute("dbConnection");
         try {
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            byte[] bytes = md5.digest(password.getBytes());
+            StringBuilder builder = new StringBuilder();
+            for(byte b : bytes) {
+                builder.append(String.format("%02X", b));
+            }
+
             Statement stat = connection.createStatement();
             ResultSet rs = stat.executeQuery("SELECT * FROM USERS WHERE" +
                     " USERNAME = '" + username +"'" +
-                    " AND PASSWORD = '" + password + "';");
+                    " AND PASSWORD = '" + builder + "';");
             if (rs.next() ) {
                 id = rs.getLong("ID");
 
@@ -72,7 +79,7 @@ public class IndexNotebookServlet extends HttpServlet {
                 req.setAttribute("textError", "Неправильный логин или пароль");
                 req.getRequestDispatcher("/index.jsp").forward(req, resp);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
