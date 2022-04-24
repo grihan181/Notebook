@@ -54,9 +54,8 @@ public class SearchServlet extends HttpServlet {
                 current = "NULL";
             }
             case "all" -> {
-                notebooks = NotebookDB.select(userId, req);
-                req.setAttribute("notebooks", notebooks);
-                req.getRequestDispatcher("/notebook.jsp").forward(req, resp);
+                resp.sendRedirect(req.getContextPath() + "/main?username=" + req.getSession().getAttribute("username") +
+                        "&password=" +  req.getSession().getAttribute("password"));
                 return;
             }
         }

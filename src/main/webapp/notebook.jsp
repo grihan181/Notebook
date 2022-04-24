@@ -103,7 +103,7 @@
                  <p class = "importantVisible" >Важно: ${notebook.important}</p>
                  <input type = "hidden" class = "important" value = "${notebook.important}"></input>
                  <p>Дата создания: ${notebook.createdWhen}</p>
-                 <p>Надо сделать к: ${notebook.reminder}</p>
+                 <p>Напомнить в: ${notebook.reminder}</p>
 
                  </a>
              </div>

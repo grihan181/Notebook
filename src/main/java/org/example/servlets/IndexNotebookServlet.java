@@ -61,7 +61,7 @@ public class IndexNotebookServlet extends HttpServlet {
 
                         long minutes = ChronoUnit.MINUTES.between(now, notebookData);
                         if(minutes < 60 && minutes > 0) {
-                            textAlerts.add("Напоминание о записке: " + notebook.getName() + "  Остался час!");
+                            textAlerts.add("Напоминание о записке: " + notebook.getName() + "  Осталось меньше часа!");
                         } else if(minutes < 0) {
                             textAlerts.add("Напоминание о записке: "  + notebook.getName() + " Срок истек!");
                         }
