@@ -53,7 +53,7 @@ public class SearchServlet extends HttpServlet {
                 row = "REMINDER";
                 current = "NULL";
             }
-            case "all" -> {
+            case "", "all" -> {
                 resp.sendRedirect(req.getContextPath() + "/main?username=" + req.getSession().getAttribute("username") +
                         "&password=" +  req.getSession().getAttribute("password"));
                 return;
