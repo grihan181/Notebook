@@ -1,18 +1,27 @@
-package org.example.classes;
+package org.example.NotebookClasses;
+
+import org.example.connection.ConnectionPool;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class NotebookDB {
-    private static Connection connection;
+    private static NotebookDB INSTANCE;
 
-    public static ArrayList<Notebook> select(long userID, HttpServletRequest req) {
+    private NotebookDB() { }
+
+    public static synchronized NotebookDB getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new NotebookDB();
+        }
+        return INSTANCE;
+    }
+
+
+    public ArrayList<Notebook> select(long userID, HttpServletRequest req) {
         ArrayList<Notebook> notebooks = new ArrayList<>();
-        connection = (Connection)req.getServletContext().getAttribute("dbConnection");
+        Connection connection = ConnectionPool.getInstance().getConnection();
 
         try {
             Statement stat = connection.createStatement();
@@ -29,14 +38,15 @@ public class NotebookDB {
                 Notebook notebook = new Notebook(id, name, notes,
                         important, createdWhen, reminded, userID);
                 notebooks.add(notebook);
-
             }
+            ConnectionPool.closeConnection(connection);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return notebooks;
     }
-    public static Notebook selectOne(long id, long userID) {
+    public Notebook selectOne(long id, long userID) {
+        Connection connection = ConnectionPool.getInstance().getConnection();
         Notebook notebook = null;
 
         try {
@@ -53,13 +63,15 @@ public class NotebookDB {
                  notebook = new Notebook(id, name, notes,
                         important, createdWhen, reminded, userID);
             }
+            ConnectionPool.closeConnection(connection);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return notebook;
     }
 
-    public static void insert(Notebook notebook) {
+    public void insert(Notebook notebook) {
+        Connection connection = ConnectionPool.getInstance().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "INSERT INTO NOTEBOOKS " +
@@ -73,11 +85,13 @@ public class NotebookDB {
             preparedStatement.setLong(5, notebook.getUsersID());
 
             preparedStatement.executeUpdate();
+            ConnectionPool.closeConnection(connection);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public static void update(Notebook notebook) {
+    public void update(Notebook notebook) {
+        Connection connection = ConnectionPool.getInstance().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "UPDATE NOTEBOOKS SET NAME = ?, NOTES = ?, IMPORTANT = ?," +
@@ -90,13 +104,14 @@ public class NotebookDB {
             preparedStatement.setLong(5, notebook.getId());
             preparedStatement.setLong(6, notebook.getUsersID());
 
-
             preparedStatement.executeUpdate();
+            ConnectionPool.closeConnection(connection);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public static void delete(long id, long userID) {
+    public void delete(long id, long userID) {
+        Connection connection = ConnectionPool.getInstance().getConnection();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "DELETE FROM NOTEBOOKS WHERE ID = ? AND USERS_ID = ?;");
@@ -104,14 +119,15 @@ public class NotebookDB {
             preparedStatement.setLong(2, userID);
             preparedStatement.executeUpdate();
 
+            ConnectionPool.closeConnection(connection);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public static ArrayList<Notebook> search(long userID, HttpServletRequest req, String row, String current) {
-
+    public ArrayList<Notebook> search(long userID, HttpServletRequest req, String row, String current) {
+        Connection connection = ConnectionPool.getInstance().getConnection();
         ArrayList<Notebook> notebooks = new ArrayList<>();
-        connection = (Connection) req.getServletContext().getAttribute("dbConnection");
+
         if (row.equals("NAME") || row.equals("NOTES") || row.equals("CREATED_WHEN")) {
             try {
                 Statement stat = connection.createStatement();
@@ -182,9 +198,14 @@ public class NotebookDB {
                 e.printStackTrace();
             }
         }
+        try {
+            ConnectionPool.closeConnection(connection);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return notebooks;
     }
-    private static String changeFormatCreatedWhen(String createdWhenBefoteSplit) {
+    private String changeFormatCreatedWhen(String createdWhenBefoteSplit) {
         String[] createdWhenSplit = createdWhenBefoteSplit.split(":");
         StringBuilder createdWhen = new StringBuilder();
         int count = 0;

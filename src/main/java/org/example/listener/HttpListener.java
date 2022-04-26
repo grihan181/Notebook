@@ -1,5 +1,8 @@
 package org.example.listener;
 
+import org.example.NotebookClasses.NotebookDB;
+import org.example.connection.ConnectionPool;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.servlet.ServletContext;
@@ -13,23 +16,15 @@ import java.sql.Statement;
 
 @WebListener
 public class HttpListener implements  ServletContextListener {
-    private Connection connection;
+
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ServletContext context = sce.getServletContext();
-        Context initCx = null;
         try {
-            initCx = new InitialContext();
-        Context envCtx = (Context) initCx.lookup("java:comp/env");
-        DataSource ds = (DataSource) envCtx.lookup("jdbc/notebookDB");
+            NotebookDB notebookDB = NotebookDB.getInstance();
 
-
-            Connection connection = ds.getConnection();
-            context.setAttribute("dbConnection", connection);
-
-            context.setAttribute("dbConnection", connection);
-
+            sce.getServletContext().setAttribute("notebookBD", notebookDB);
+            Connection connection = ConnectionPool.getInstance().getConnection();
             Statement stat;
             stat = connection.createStatement();
             stat.execute("CREATE TABLE IF NOT EXISTS Users(" +
@@ -48,21 +43,13 @@ public class HttpListener implements  ServletContextListener {
                     "REMINDER VARCHAR(255)," +
                     "USERS_ID BIGINT," +
                     "FOREIGN KEY (USERS_ID) REFERENCES Users(ID));");
+            ConnectionPool.closeConnection(connection);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-        try {
-            ((Connection)sce.getServletContext().getAttribute("dbConnection")).close();
-            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 }
+
 
 

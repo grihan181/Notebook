@@ -1,5 +1,7 @@
 package org.example.servlets;
 
+import org.example.connection.ConnectionPool;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,7 +24,8 @@ public class SignUpServlet extends HttpServlet {
         String usernamesignup = req.getParameter("usernamesignup");
         String emailsignup = req.getParameter("emailsignup");
         try {
-        Connection connection = (Connection)req.getServletContext().getAttribute("dbConnection");
+
+            Connection connection = ConnectionPool.getInstance().getConnection();
         Statement stat = connection.createStatement();
         ResultSet rs = stat.executeQuery("SELECT * FROM USERS WHERE" +
                 " (USERNAME = '" + usernamesignup +"')" +
@@ -30,6 +33,7 @@ public class SignUpServlet extends HttpServlet {
         if(rs.next()) {
             req.setAttribute("textError", "Такое имя пользователя или почта уже используется");
             req.getRequestDispatcher("/register.jsp").forward(req, resp);
+            connection.close();
             return;
         }
 
@@ -44,10 +48,10 @@ public class SignUpServlet extends HttpServlet {
                     "values('" + usernamesignup +
                     "', '" + builder +
                     "', '" + emailsignup + "');");
+            connection.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         req.setAttribute("textError", "Поздравляю, вы зарегистрировали аккаунт!");
         req.getRequestDispatcher("/index.jsp").forward(req, resp);
 

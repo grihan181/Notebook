@@ -1,4 +1,4 @@
-package org.example.classes;
+package org.example.NotebookClasses;
 
 public class Notebook {
     private long id;

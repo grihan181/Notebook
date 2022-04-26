@@ -1,7 +1,7 @@
 package org.example.servlets;
 
-import org.example.classes.Notebook;
-import org.example.classes.NotebookDB;
+import org.example.NotebookClasses.Notebook;
+import org.example.NotebookClasses.NotebookDB;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -62,7 +62,7 @@ public class SearchServlet extends HttpServlet {
 
 
 
-        notebooks = NotebookDB.search(userId, req, row, current);
+        notebooks =  ((NotebookDB) req.getServletContext().getAttribute("notebookBD")).search(userId, req, row, current);
         for(Notebook notebook : notebooks) {
             if(notebook.getReminder() != null) {
                 notebook.setReminder(notebook.getReminder().replace('T', ' '));
