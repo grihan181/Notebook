@@ -2,7 +2,6 @@ package org.example.NotebookClasses;
 
 import org.apache.log4j.Logger;
 import org.example.connection.ConnectionPool;
-import org.example.listener.HttpListener;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
