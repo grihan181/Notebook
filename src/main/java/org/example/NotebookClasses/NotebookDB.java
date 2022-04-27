@@ -1,6 +1,8 @@
 package org.example.NotebookClasses;
 
+import org.apache.log4j.Logger;
 import org.example.connection.ConnectionPool;
+import org.example.listener.HttpListener;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
@@ -8,7 +10,7 @@ import java.util.ArrayList;
 
 public class NotebookDB {
     private static NotebookDB INSTANCE;
-
+    final static Logger logger = Logger.getLogger(NotebookDB.class);
     private NotebookDB() { }
 
     public static synchronized NotebookDB getInstance() {
@@ -41,7 +43,7 @@ public class NotebookDB {
             }
             ConnectionPool.closeConnection(connection);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return notebooks;
     }
@@ -65,7 +67,7 @@ public class NotebookDB {
             }
             ConnectionPool.closeConnection(connection);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return notebook;
     }
@@ -87,7 +89,7 @@ public class NotebookDB {
             preparedStatement.executeUpdate();
             ConnectionPool.closeConnection(connection);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e);
         }
     }
     public void update(Notebook notebook) {
@@ -107,7 +109,7 @@ public class NotebookDB {
             preparedStatement.executeUpdate();
             ConnectionPool.closeConnection(connection);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e);
         }
     }
     public void delete(long id, long userID) {
@@ -121,7 +123,7 @@ public class NotebookDB {
 
             ConnectionPool.closeConnection(connection);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e);
         }
     }
     public ArrayList<Notebook> search(long userID, HttpServletRequest req, String row, String current) {
@@ -149,7 +151,7 @@ public class NotebookDB {
 
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e);
             }
         } else if (row.equals("REMINDER")) {
             try {
@@ -172,7 +174,7 @@ public class NotebookDB {
 
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e);
             }
         } else if (row.equals("IMPORTANT")) {
             try {
@@ -195,7 +197,7 @@ public class NotebookDB {
 
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e);
             }
         }
         try {

@@ -8,7 +8,7 @@
           password=""
           driverClassName="org.h2.Driver"
           url="jdbc:h2:file:G:/Database/education/notebookDB;AUTO_SERVER=TRUE"
-          maxActive="15"
+          maxTotal="15"
           maxIdle="3"
-          maxWait="10000"/>
+          maxWaitMillis="10000"/>
 </Context>

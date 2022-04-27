@@ -1,5 +1,6 @@
 package org.example.servlets;
 
+import org.apache.log4j.Logger;
 import org.example.connection.ConnectionPool;
 
 import javax.servlet.ServletException;
@@ -15,6 +16,7 @@ import java.sql.Statement;
 
 @WebServlet(urlPatterns = "/signup")
 public class SignUpServlet extends HttpServlet {
+    final static Logger logger = Logger.getLogger(SignUpServlet.class);
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -50,7 +52,7 @@ public class SignUpServlet extends HttpServlet {
                     "', '" + emailsignup + "');");
             connection.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         req.setAttribute("textError", "Поздравляю, вы зарегистрировали аккаунт!");
         req.getRequestDispatcher("/index.jsp").forward(req, resp);

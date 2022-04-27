@@ -1,6 +1,8 @@
 package org.example.servlets;
 
+import org.apache.log4j.Logger;
 import org.example.NotebookClasses.NotebookDB;
+import org.example.listener.HttpListener;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +13,7 @@ import java.io.IOException;
 
 @WebServlet(urlPatterns = "/delete")
 public class DeleteNotebookServlet extends HttpServlet {
+    final static Logger logger = Logger.getLogger(DeleteNotebookServlet.class);
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
@@ -22,7 +25,7 @@ public class DeleteNotebookServlet extends HttpServlet {
                     "&password=" +  req.getSession().getAttribute("password"));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e);
         }
     }
 }

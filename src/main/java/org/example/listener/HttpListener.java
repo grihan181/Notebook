@@ -1,22 +1,19 @@
 package org.example.listener;
 
+import org.apache.log4j.Logger;
 import org.example.NotebookClasses.NotebookDB;
 import org.example.connection.ConnectionPool;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.servlet.ServletContext;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletContextEvent;
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.Statement;
 
 
 @WebListener
 public class HttpListener implements  ServletContextListener {
-
+    final static Logger logger = Logger.getLogger(HttpListener.class);
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -46,7 +43,7 @@ public class HttpListener implements  ServletContextListener {
             ConnectionPool.closeConnection(connection);
 
         } catch (Exception e) {
-            e.printStackTrace();
+           logger.error(e);
         }
     }
 }

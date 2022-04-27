@@ -1,5 +1,6 @@
 package org.example.servlets;
 
+import org.apache.log4j.Logger;
 import org.example.NotebookClasses.Notebook;
 import org.example.NotebookClasses.NotebookDB;
 import org.example.connection.ConnectionPool;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 
 @WebServlet(urlPatterns ="/main")
 public class IndexNotebookServlet extends HttpServlet {
+    final static Logger logger = Logger.getLogger(IndexNotebookServlet.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -81,13 +83,14 @@ public class IndexNotebookServlet extends HttpServlet {
                 req.setAttribute("textError", "Неправильный логин или пароль");
                 req.getRequestDispatcher("/index.jsp").forward(req, resp);
             }
+            logger.info("Пользователь " + username + " вошел");
         } catch (Exception e) {
-            e.printStackTrace();
+          logger.error(e);
         }
         try {
             ConnectionPool.closeConnection(connection);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
     }
 
