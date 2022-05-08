@@ -16,9 +16,7 @@ public interface NotebookDaoInterface {
 
     public int selectOne(String usename, String email);
 
-    public void insert(Notebooks notebook);
-
-    public void insert(Users user);
+    public<T> void insert(T t);
 
     public  void update(Notebooks notebook);
 

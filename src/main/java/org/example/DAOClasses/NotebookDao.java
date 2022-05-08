@@ -117,24 +117,11 @@ public class NotebookDao implements NotebookDaoInterface {
     }
 
     @Override
-    public void insert(Notebooks notebook) {
+    public<T> void insert(T t) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();
         try {
-            session.save(notebook);
-            tx.commit();
-        } catch (Exception e) {
-            tx.rollback();
-            logger.error(e);
-        }
-        session.close();
-    }
-
-    public void insert(Users user) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction tx = session.beginTransaction();
-        try {
-            session.save(user);
+            session.save(t);
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
