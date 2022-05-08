@@ -1,8 +1,11 @@
 package org.example.servlets;
 
 
+import org.example.DAOClasses.NotebookDao;
 import org.example.NotebookClasses.Notebook;
 import org.example.NotebookClasses.NotebookDB;
+import org.example.modelClasses.Notebooks;
+import org.example.modelClasses.Users;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @WebServlet(urlPatterns = "/create")
 public class CreateNotebookServlet extends HttpServlet {
@@ -28,22 +32,21 @@ public class CreateNotebookServlet extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         resp.setCharacterEncoding("UTF-8");
         req.setCharacterEncoding("UTF-8");
-
         try {
             String name = req.getParameter("name");
             String notes = req.getParameter("notes");
             boolean important = req.getParameter("important") != null;
-            String createdWhen = req.getParameter("createdWhen");
+            String createdWhen = LocalDateTime.now().toString();
 
 
-            String reminded;
+            String reminder;
             if(req.getParameter("reminder").equals("")) {
-                reminded = null;
+                reminder = null;
             } else  {
-                reminded = req.getParameter("reminder");
+                reminder = req.getParameter("reminder");
             }
-            Notebook notebook = new Notebook(name, notes, important, createdWhen, reminded, Long.parseLong((req.getSession().getAttribute("userId")).toString()));
-            ((NotebookDB) req.getServletContext().getAttribute("notebookBD")).insert(notebook);
+            Notebooks notebook = new Notebooks(name, notes, important, createdWhen, reminder, (Users) req.getSession().getAttribute("user"));
+            ((NotebookDao) req.getServletContext().getAttribute("notebookDao")).insert(notebook);
 
             resp.sendRedirect(req.getContextPath() + "/main?username=" + req.getSession().getAttribute("username") +
                     "&password=" +  req.getSession().getAttribute("password"));

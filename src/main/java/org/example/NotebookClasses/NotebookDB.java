@@ -3,7 +3,7 @@ package org.example.NotebookClasses;
 import org.apache.log4j.Logger;
 import org.example.connection.ConnectionPool;
 
-import javax.servlet.http.HttpServletRequest;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -20,7 +20,7 @@ public class NotebookDB {
     }
 
 
-    public ArrayList<Notebook> select(long userID, HttpServletRequest req) {
+    public ArrayList<Notebook> select(long userID) {
         ArrayList<Notebook> notebooks = new ArrayList<>();
         Connection connection = ConnectionPool.getInstance().getConnection();
 
@@ -125,7 +125,7 @@ public class NotebookDB {
             logger.error(e);
         }
     }
-    public ArrayList<Notebook> search(long userID, HttpServletRequest req, String row, String current) {
+    public ArrayList<Notebook> search(long userID, String row, String current) {
         Connection connection = ConnectionPool.getInstance().getConnection();
         ArrayList<Notebook> notebooks = new ArrayList<>();
 

@@ -1,7 +1,10 @@
 package org.example.servlets;
 
+import org.example.DAOClasses.NotebookDao;
 import org.example.NotebookClasses.Notebook;
 import org.example.NotebookClasses.NotebookDB;
+import org.example.modelClasses.Notebooks;
+import org.example.modelClasses.Users;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @WebServlet(urlPatterns = "/edit")
 public class EditNotebookServlet extends HttpServlet {
@@ -19,9 +23,8 @@ public class EditNotebookServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
 
         long id = Long.parseLong(req.getParameter("id"));
-        long userId = Long.parseLong((req.getSession().getAttribute("userId")).toString());
 
-        Notebook notebook =  ((NotebookDB) req.getServletContext().getAttribute("notebookBD")).selectOne(id, userId);
+        Notebooks notebook =   ((NotebookDao) req.getServletContext().getAttribute("notebookDao")).selectOne(id, (Users) req.getSession().getAttribute("user"));
         if(notebook != null) {
             req.setAttribute("notebook", notebook);
             getServletContext().getRequestDispatcher("/edit.jsp").forward(req, resp);
@@ -41,17 +44,17 @@ public class EditNotebookServlet extends HttpServlet {
         String notes = req.getParameter("notes");
         boolean important;
         important = req.getParameter("important") != null;
-        String createdWhen = req.getParameter("createdWhen");
+        String createdWhen = LocalDateTime.now().toString();
 
-        String reminded;
+        String reminder;
         if(req.getParameter("reminder").equals("")) {
-            reminded = null;
+            reminder = null;
         } else  {
-            reminded = req.getParameter("reminder");
+            reminder = req.getParameter("reminder");
         }
 
-        Notebook notebook = new Notebook(id, name, notes, important, createdWhen, reminded, Long.parseLong((req.getSession().getAttribute("userId")).toString()));
-        ((NotebookDB) req.getServletContext().getAttribute("notebookBD")).update(notebook);
+        Notebooks notebook = new Notebooks(id, name, notes, important, createdWhen, reminder, (Users) req.getSession().getAttribute("user"));
+        ((NotebookDao) req.getServletContext().getAttribute("notebookDao")).update(notebook);
 
         resp.sendRedirect(req.getContextPath() + "/main?username=" + req.getSession().getAttribute("username") +
                 "&password=" +  req.getSession().getAttribute("password"));

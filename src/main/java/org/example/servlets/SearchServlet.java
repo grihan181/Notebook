@@ -1,7 +1,10 @@
 package org.example.servlets;
 
+import org.example.DAOClasses.NotebookDao;
 import org.example.NotebookClasses.Notebook;
 import org.example.NotebookClasses.NotebookDB;
+import org.example.modelClasses.Notebooks;
+import org.example.modelClasses.Users;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,36 +25,36 @@ public class SearchServlet extends HttpServlet {
         long userId = Long.parseLong((req.getSession().getAttribute("userId")).toString());
         String row = "";
         String current = "";
-        ArrayList<Notebook> notebooks;
+        ArrayList<Notebooks> notebooks;
 
         switch (req.getParameter("selectSearch")) {
             case "searchName"  ->  {
-                row = "NAME";
+                row = "name";
                 current = req.getParameter("searchText");
             }
             case "searchNotes" -> {
-                row = "NOTES";
+                row = "notes";
                 current = req.getParameter("searchText");
             }
             case "searchData" -> {
-                row = "CREATED_WHEN";
+                row = "createdWhen";
                 current = req.getParameter("searchText");
             }
             case "Важно" -> {
-                row = "IMPORTANT";
+                row = "important";
                 current = "true";
             }
             case "Не важно" -> {
-                row = "IMPORTANT";
+                row = "important";
                 current = "false";
             }
             case "Напомнить" -> {
-                row = "REMINDER";
-                current = "NOT NULL";
+                row = "reminder";
+                current = "not null";
             }
             case "Не напоминать" -> {
-                row = "REMINDER";
-                current = "NULL";
+                row = "reminder";
+                current = "null";
             }
             case "", "all" -> {
                 resp.sendRedirect(req.getContextPath() + "/main?username=" + req.getSession().getAttribute("username") +
@@ -62,8 +65,8 @@ public class SearchServlet extends HttpServlet {
 
 
 
-        notebooks =  ((NotebookDB) req.getServletContext().getAttribute("notebookBD")).search(userId, req, row, current);
-        for(Notebook notebook : notebooks) {
+        notebooks = ((NotebookDao) req.getServletContext().getAttribute("notebookDao")).search((Users)req.getSession().getAttribute("user"), row, current);
+        for(Notebooks notebook : notebooks) {
             if(notebook.getReminder() != null) {
                 notebook.setReminder(notebook.getReminder().replace('T', ' '));
             }

@@ -24,7 +24,7 @@
                     </label>
                     <label>Напомнить <input type="checkbox" id = "checkbox"
                     onclick="if(this.checked){this.nextSibling.style.display=''; }else {this.nextSibling.style.display='none'; this.nextSibling.value=''; }"
-                   ><input type="datetime-local" id="reminder" style="display:none;"
+                   ><input type="datetime-local"  id="reminder" style="display:none;"
                            name="reminder" value="${notebook.reminder}"
                            min="2021-06-07T00:00" max="2025-06-14T00:00">
                    </label>
