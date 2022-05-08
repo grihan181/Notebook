@@ -2,7 +2,6 @@ package org.example.servlets;
 
 import org.apache.log4j.Logger;
 import org.example.DAOClasses.NotebookDao;
-import org.example.connection.ConnectionPool;
 import org.example.modelClasses.Users;
 
 import javax.servlet.ServletException;
@@ -12,9 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.MessageDigest;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 @WebServlet(urlPatterns = "/signup")
 public class SignUpServlet extends HttpServlet {

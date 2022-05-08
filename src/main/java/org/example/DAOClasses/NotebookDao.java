@@ -1,14 +1,8 @@
 package org.example.DAOClasses;
 
 import jakarta.persistence.Query;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
 import org.apache.log4j.Logger;
 import org.example.DAOInterfaces.NotebookDaoInterface;
-import org.example.NotebookClasses.Notebook;
-import org.example.NotebookClasses.NotebookDB;
-import org.example.connection.ConnectionPool;
 import org.example.connection.HibernateUtil;
 import org.example.modelClasses.Notebooks;
 import org.example.modelClasses.Users;
@@ -16,10 +10,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

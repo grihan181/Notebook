@@ -2,8 +2,6 @@ package org.example.servlets;
 
 
 import org.example.DAOClasses.NotebookDao;
-import org.example.NotebookClasses.Notebook;
-import org.example.NotebookClasses.NotebookDB;
 import org.example.modelClasses.Notebooks;
 import org.example.modelClasses.Users;
 

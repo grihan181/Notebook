@@ -2,9 +2,6 @@ package org.example.servlets;
 
 import org.apache.log4j.Logger;
 import org.example.DAOClasses.NotebookDao;
-import org.example.NotebookClasses.Notebook;
-import org.example.NotebookClasses.NotebookDB;
-import org.example.connection.ConnectionPool;
 import org.example.modelClasses.Notebooks;
 import org.example.modelClasses.Users;
 
@@ -15,10 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.MessageDigest;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;

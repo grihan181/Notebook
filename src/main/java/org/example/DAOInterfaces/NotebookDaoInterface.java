@@ -1,6 +1,6 @@
 package org.example.DAOInterfaces;
 
-import org.example.NotebookClasses.Notebook;
+
 import org.example.modelClasses.Notebooks;
 import org.example.modelClasses.Users;
 

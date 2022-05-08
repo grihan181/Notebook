@@ -2,7 +2,6 @@ package org.example.servlets;
 
 import org.apache.log4j.Logger;
 import org.example.DAOClasses.NotebookDao;
-import org.example.NotebookClasses.NotebookDB;
 import org.example.modelClasses.Users;
 
 import javax.servlet.ServletException;
